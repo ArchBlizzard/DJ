@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Order List</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Customer Name</th>
+        <th>Order Date</th>
+        <th>Total Price</th>
+        <th>Tags</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        <tr>
+          <td>{{ order.customer_name }}</td>
+          <td>{{ order.order_date }}</td>
+          <td>{{ order.total_price }}</td>
+          <td>
+            {% for tag in order.tags.all %}
+              <span class="badge badge-primary">{{ tag.name }}</span>
+            {% endfor %}
+          </td>
+          <td>
+            <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-outline-secondary">View</a>
+            {% if order.id in favorites %}
+              <a href="{% url 'favorite_toggle' order.id %}" class="btn btn-sm btn-outline-warning">Remove from Favorites</a>
+            {% else %}
+              <a href="{% url 'favorite_toggle' order.id %}" class="btn btn-sm btn-outline-primary">Add to Favorites</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+``
